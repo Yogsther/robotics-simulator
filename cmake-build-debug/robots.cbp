@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/olle/Desktop/robots/Map.cpp">
+			<Option target="robots"/>
+		</Unit>
+		<Unit filename="/home/olle/Desktop/robots/Map.h">
+			<Option target="robots"/>
+		</Unit>
 		<Unit filename="/home/olle/Desktop/robots/Position.cpp">
 			<Option target="robots"/>
 		</Unit>

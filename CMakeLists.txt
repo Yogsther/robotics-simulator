@@ -3,4 +3,4 @@ project(robots)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(robots main.cpp Robot.cpp Robot.h Position.cpp Position.h)
+add_executable(robots main.cpp Robot.cpp Robot.h Position.cpp Position.h Map.cpp Map.h)

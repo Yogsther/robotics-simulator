@@ -123,6 +123,33 @@ robots/fast:
 	$(MAKE) -f CMakeFiles/robots.dir/build.make CMakeFiles/robots.dir/build
 .PHONY : robots/fast
 
+Map.o: Map.cpp.o
+
+.PHONY : Map.o
+
+# target to build an object file
+Map.cpp.o:
+	$(MAKE) -f CMakeFiles/robots.dir/build.make CMakeFiles/robots.dir/Map.cpp.o
+.PHONY : Map.cpp.o
+
+Map.i: Map.cpp.i
+
+.PHONY : Map.i
+
+# target to preprocess a source file
+Map.cpp.i:
+	$(MAKE) -f CMakeFiles/robots.dir/build.make CMakeFiles/robots.dir/Map.cpp.i
+.PHONY : Map.cpp.i
+
+Map.s: Map.cpp.s
+
+.PHONY : Map.s
+
+# target to generate assembly for a file
+Map.cpp.s:
+	$(MAKE) -f CMakeFiles/robots.dir/build.make CMakeFiles/robots.dir/Map.cpp.s
+.PHONY : Map.cpp.s
+
 Position.o: Position.cpp.o
 
 .PHONY : Position.o
@@ -213,6 +240,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... robots"
+	@echo "... Map.o"
+	@echo "... Map.i"
+	@echo "... Map.s"
 	@echo "... Position.o"
 	@echo "... Position.i"
 	@echo "... Position.s"
