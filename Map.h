@@ -7,7 +7,10 @@
 
 
 class Map {
-
+private:
+    int width;
+    int height;
+    Map(int width, int height) // Constructor, create the map
 
 };
 
