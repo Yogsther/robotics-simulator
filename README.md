@@ -33,6 +33,15 @@ int light - Mängden ljus där, 0-10 där 0 är helt mörker
 
 int item - Vad det finns för item där just då, 0-2 där 0 är tomt. 1 är ljuskälla och 2 är station
 
+setLight(int intensity) Set the light intenisty, 1-10 int value
+
+setItem(int item) - Set item, any int
+
+getLight() - Get the light level from that block
+
+getItem() - Get the item in that block
+
+
 #### Map
 
 ###### private
