@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <zconf.h>
 #include "Robot.h"
 #include "Position.h"
 
@@ -17,6 +16,6 @@ int main() {
 
         cout << "x:" << robot->getPosition().x << " y: " << robot->getPosition().y << endl;
 
-        sleep(1);
+        //sleep(1);
     }
 }
