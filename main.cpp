@@ -15,11 +15,11 @@ int main() {
     block->setItem(2);
     block->setLight(5);
 
+    cout << "Block => item: " << block->getItem() << " light: " << block->getLight() << endl;
+
     while(true){
 
         robot->move(1, 0);
-
-        cout << "Block => item: " << block->getItem() << " light: " << block->getLight();
         //cout << "x:" << robot->getPosition().x << " y: " << robot->getPosition().y << endl;
 
         //sleep(1);
