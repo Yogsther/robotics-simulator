@@ -66,6 +66,24 @@ block getItemAt(x, y) returnerar blocket vid x,y
 
 block getItemAt(index) returnerar blocket vid index
 
+
+
+#### Screen
+
+###### private
+
+char[] data - Information for each pixel to draw
+
+###### public
+
+clear() - Clear screen
+
+draw(char character, int x, int y) - Input something in the screen data
+
+render() - Render everything on screen, should be done once everything has been draw each frame. 
+ 
+Screen(int width, int height) - Constructor, creates a screen and render a border with each render() call
+
 #### main
 
 Map map - En karta som innehåller positioner för alla stationer och ljuskällor och en ljus-karta.

@@ -1,27 +1,42 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <zconf.h>
 #include "Robot.h"
 #include "Position.h"
 #include "Block.h"
+#include "Screen.h"
 
 using namespace std;
 
-int main() {
-    cout << "Creating new robot..." << endl;
-    Robot *robot = new Robot(0, 5, true);
+void sleepcp(int milliseconds);
 
-    Block *block = new Block();
-    block->setItem(2);
-    block->setLight(5);
-
-    cout << "Block => item: " << block->getItem() << " light: " << block->getLight() << endl;
-
-    while(true){
-
-        robot->move(1, 0);
-        //cout << "x:" << robot->getPosition().x << " y: " << robot->getPosition().y << endl;
-
-        //sleep(1);
+void sleepcp(int milliseconds)
+{
+    clock_t time_end;
+    time_end = clock() + milliseconds * CLOCKS_PER_SEC/1000;
+    while (clock() < time_end)
+    {
     }
 }
+
+
+int main() {
+    Robot *robot = new Robot(0, 5, true);
+    Screen *screen = new Screen(50, 20);
+
+    screen->clear();
+    int position = 0;
+    char alpha[] = {'A', 'B', 'C', 'D', 'E'};
+
+    while(true){
+        screen->clear();
+        screen->draw('O', position%1000);
+        position++;
+        screen->render();
+        sleepcp(32);
+    }
+}
+
+
+
