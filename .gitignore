@@ -1,2 +1,9 @@
 /cmake-build-debug
 /.idea
+/Debug
+/.vs
+CMakeLists.txt
+Robotics.vcxproj.user
+Robotics.vcxproj.filters
+Robotics.vcxproj
+Robotics.sln

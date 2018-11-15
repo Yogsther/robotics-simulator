@@ -5,19 +5,16 @@
 #ifndef ROBOTS_BLOCK_H
 #define ROBOTS_BLOCK_H
 
-
 class Block {
 private:
-    int light = 0;
-    int item = 0;
+	int light = 0;
+	int item = 0;
 public:
-    void setLight(int intensity);
-    void setItem(int item);
-    int getLight();
-    int getItem();
-
-
+	Block::Block();
+	void setLight(int intensity);
+	void setItem(int item);
+	int getLight();
+	int getItem();
 };
-
 
 #endif //ROBOTS_BLOCK_H

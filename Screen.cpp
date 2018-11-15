@@ -4,68 +4,87 @@
 
 #include <iostream>
 #include "Screen.h"
+#include <string>
 using namespace std;
 
 string borderString = "";
+string frameSpace = "";
+int frameSpacing = 100; // Lines
 
 Screen::Screen(int width, int height) {
-    this->width = width;
-    this->height = height;
+	this->width = width;
+	this->height = height;
 
-    for (int i = 0; i < width*height; i++) {
-        data.push_back('E');
-    }
+	for (int i = 0; i < width*height; i++) {
+		data.push_back('E');
+	}
 
-    for (int j = 0; j < width+2; ++j) {
-        borderString+="*";
-    }
+	for (int j = 0; j < width + 2; ++j) {
+		borderString += "*";
+	}
+
+	// Draw blank space to reset view
+	for (int k = 0; k < frameSpacing; k++) {
+		frameSpace += '\n';
+	}
 }
 
 void Screen::clear() {
-    for(int i = 0; i < data.size(); i++){
-        data.at(i) = 'E';
-    }
+	for (int i = 0; i < data.size(); i++) {
+		data.at(i) = 'E';
+	}
 }
 
 void Screen::draw(char character, int index) {
-    if(index >= data.size() || index < 0) return;
-    data.at(index) = character;
+	if (index >= data.size() || index < 0) return;
+	data.at(index) = character;
 }
 
 void Screen::draw(char character, int x, int y) {
-    draw(character, x + (y*width));
+	draw(character, x + (y*width));
 }
 
+string printStr = "";
 
+void Screen::print(string str) {
+	printStr = printStr + str;
+}
+void Screen::print(char str) {
+	printStr = printStr + str;
+}
 
+void displayPrint() {
+	//printf("%s\n", printStr.c_str());
+	cout << printStr;
+	printStr = "";
+}
 
 void Screen::render() {
+	// Reset view
+	//cout << frameSpace << endl;
+	print(frameSpace);
 
-    int frameSpacing = 50; // Lines
+	// Print GUI and text (above border)
 
-    // Draw blank space to reset view
-    for (int j = 0; j < frameSpacing; j++) {
-        cout << endl;
-    }
+	// Top frame border
+	//cout << borderString << endl;
+	print(borderString + "\n");
 
+	for (int i = 0; i < width*height; i++) {
+		if (i % width == 0 && i != 0) print("\n"); // End of line, break line
 
-    // Top frame border
-    cout << borderString << endl;
+		// Border top and left
+		if (i % width == 0) print("*");
 
-    for (int i = 0; i < width*height; i++) {
-        if(i % width == 0 && i != 0) cout << endl; // End of line, break line
+		if (data.at(i) != 'E') print(data.at(i)); // Draw out character for this pixel
+		else print(" "); // Draw empty if slot is empty, i.e 'E'
 
-        // Border top and left
-        if(i % width == 0) cout << "*";
+	// Right side border
+		if (i % width == width - 1) print("*");
+	}
 
-        if(data.at(i) != 'E') cout << data.at(i); // Draw out character for this pixel
-            else cout << ' '; // Draw empty if slot is empty, i.e 'E'
+	// Bottom frame border
+	print('\n' + borderString + '\n');
 
-        // Right side border
-        if(i % width == width-1) cout << "*";
-    }
-
-    // Bottom frame border
-    cout << endl << borderString << endl;
+	displayPrint();
 }
-
