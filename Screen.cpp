@@ -59,12 +59,10 @@ void displayPrint() {
 	printStr = "";
 }
 
-void Screen::render() {
+void Screen::render(string gui) {
 	// Reset view
 	//cout << frameSpace << endl;
 	print(frameSpace);
-
-	// Print GUI and text (above border)
 
 	// Top frame border
 	//cout << borderString << endl;

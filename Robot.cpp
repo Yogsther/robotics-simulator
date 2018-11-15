@@ -16,14 +16,32 @@ public:
 		this->y = y;
 		this->value = value;
 	}
+	int getX() {
+		return this->x;
+	}
+	int getY() {
+		return this->y;
+	}
+	int getValue() {
+		return this->value;
+	}
 };
 
 Move evaluateMove(int x, int y, Position pos, Map map) {
-	int movePoints = 0;
+	int movePoints = 1;
+	bool possible = true;
 	x += pos.x;
 	y += pos.y;
 
-	return Move::Move();
+	int width = map.getWidth();
+	int height = map.getHeight();
+
+	if (x > width || x < 0 || y > height || y < 0) possible = false;
+	if (map.getItem(x, y).getItem() != 0) possible = false;
+
+	if (!possible) movePoints = 0;
+
+	return Move::Move(x, y, movePoints);
 }
 
 Robot::Robot(int x, int y, bool lightLover) {
@@ -55,6 +73,18 @@ void Robot::logic(Map map) {
 	moves[2] = evaluateMove(0, -1, this->position, map);
 	moves[3] = evaluateMove(-1, 0, this->position, map);
 
-	for (int i = 0; i < sizeof(moves); i++) {
+	Move bestMove = Move::Move(0, 0, 0);
+	Move worstMove = Move::Move(-1, 0, 0);
+	for (Move move : moves) {
+		if (move.getValue() > bestMove.getValue()) bestMove = move;
+		if (move.getValue() < worstMove.getValue() || worstMove.getValue() == -1) worstMove = move;
+	}
+	if (bestMove.getValue() != 0) {
+		if (bestMove.getValue() == worstMove.getValue()) {
+			this->move(moves[this->direction].getX(), moves[this->direction].getY()); // Continue in direction, all moves are equally good.
+		}
+		else {
+			this->move(bestMove.getX(), bestMove.getY()); // Choose the best move.
+		}
 	}
 }

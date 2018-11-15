@@ -25,8 +25,8 @@ int main() {
 		robots[i] = Robot::Robot(rand() % WIDTH, rand() % HEIGHT, true);
 	}
 	//Robot robot = new Robot(0, 5, true);
-	Screen *screen = new Screen(WIDTH, HEIGHT); // Create a new screen to display the simulation onto
-	Map *map = new Map(WIDTH, HEIGHT);
+	Screen* screen = new Screen(WIDTH, HEIGHT); // Create a new screen to display the simulation onto
+	Map* map = new Map(WIDTH, HEIGHT);
 
 	screen->clear(); // Start of with a clean screen
 
@@ -44,7 +44,9 @@ int main() {
 			screen->draw(rob.getIcon(), pos.x, pos.y);
 		}
 
-		screen->render(); // Render screen
-		this_thread::sleep_for(std::chrono::milliseconds(16)); // Sleep for some millis
+		string gui = "Robots: " + sizeof(robots);
+
+		screen->render(gui); // Render screen
+		this_thread::sleep_for(std::chrono::milliseconds(100)); // Sleep for some millis
 	}
 }

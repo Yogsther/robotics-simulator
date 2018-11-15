@@ -20,7 +20,7 @@ public:
 	Screen(int width, int height);
 	void draw(char character, int x, int y);
 	void draw(char character, int index);
-	void render();
+	void render(string gui);
 	void clear();
 };
 
