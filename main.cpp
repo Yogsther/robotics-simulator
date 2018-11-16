@@ -12,9 +12,9 @@
 
 using namespace std;
 
-int const amountOfRobots = 5;
-int const WIDTH = 60;
-int const HEIGHT = 20;
+int const amountOfRobots = 100;
+int const WIDTH = 90;
+int const HEIGHT = 30;
 
 int main() {
 	Robot robots[amountOfRobots];
@@ -52,13 +52,13 @@ int main() {
 			map->putItem(0, pos.x, pos.y); // Remove footprint
 			pos = robots[j].logic(*map); // Run logic, and save new position
 			map->putItem(3, pos.x, pos.y); // Re-apply footprint
-			cout << "Position to draw " << pos.x << ":" << pos.y << " Robot index: " << j << " Robots[] size: " << amountOfRobots << endl;
+			//cout << "Position to draw " << pos.x << ":" << pos.y << " Robot index: " << j << " Robots[] size: " << amountOfRobots << endl;
 			screen->draw(robots[j].getIcon(), pos.x, pos.y); // Render out robot
 		}
 
 		string gui = "Robot 0: " + to_string(robots[0].getPosition().x) + ":" + to_string(robots[0].getPosition().y) + " dir: " + to_string(robots[0].getDirection()); // Compile GUI Text
 
 		screen->render(gui); // Render screen with GUI
-		this_thread::sleep_for(std::chrono::milliseconds(100)); // Sleep for some millis
+		//this_thread::sleep_for(std::chrono::milliseconds(32)); // Sleep for some millis
 	}
 }

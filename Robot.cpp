@@ -58,7 +58,7 @@ Robot::Robot() {
 void Robot::move(int x, int y) {
 	this->position.x += x;
 	this->position.y += y;
-	std::cout << "Moved > " << x << y << "Final x,y: " << this->position.x << ":" << this->position.y << std::endl;
+	//std::cout << "Moved > " << x << y << "Final x,y: " << this->position.x << ":" << this->position.y << std::endl;
 }
 
 
@@ -71,6 +71,8 @@ char Robot::getIcon() {
 }
 
 Position Robot::logic(Map map) {
+
+	this->direction = rand()%4;
 
 	const int amountOfMoves = 4;
 	Move moves[amountOfMoves]; // 4 possible moves
