@@ -10,7 +10,7 @@ private:
 	int light = 0;
 	int item = 0;
 public:
-	Block::Block();
+	Block();
 	void setLight(int intensity);
 	void setItem(int item);
 	int getLight();

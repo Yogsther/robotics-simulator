@@ -22,6 +22,8 @@ public:
 	void draw(char character, int index);
 	void render(string gui);
 	void clear();
+
+    void clean();
 };
 
 #endif //ROBOTS_SCREEN_H

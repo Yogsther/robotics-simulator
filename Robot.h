@@ -14,11 +14,12 @@ class Robot {
 public:
 	Robot();
 	Robot(int x, int y, bool lightLover);
-	void logic(Map map); // Run the bot (one frame)
+	Position logic(Map map); // Run the bot (one frame)
 	void move(int x, int y);
 	Position getPosition();
 	void refuel();
 	char getIcon();
+	int getDirection();
 private:
 	int fuel = 25; // Starts with 25 fuel, max amount is 50.
 	bool lightLover;

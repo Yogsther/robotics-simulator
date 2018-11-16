@@ -12,8 +12,8 @@
 
 using namespace std;
 
-int const amountOfRobots = 3;
-int const WIDTH = 50;
+int const amountOfRobots = 5;
+int const WIDTH = 60;
 int const HEIGHT = 20;
 
 int main() {
@@ -21,8 +21,11 @@ int main() {
 
 	srand(time(NULL)); // Seed rand()
 
+	// Summon the robots
 	for (int i = 0; i < amountOfRobots; i++) {
-		robots[i] = Robot::Robot(rand() % WIDTH, rand() % HEIGHT, true);
+		int x = rand() % WIDTH;
+		int y = rand() % HEIGHT;
+		robots[i] = Robot(x, y, true);
 	}
 	//Robot robot = new Robot(0, 5, true);
 	Screen* screen = new Screen(WIDTH, HEIGHT); // Create a new screen to display the simulation onto
@@ -37,16 +40,25 @@ int main() {
 		for (int i = 0; i < (WIDTH * HEIGHT); i++) {
 		}
 
-		// Render out the robots
+		// Add all robot footprints
 		for (Robot rob : robots) {
-			rob.logic(*map);
 			Position pos = rob.getPosition();
-			screen->draw(rob.getIcon(), pos.x, pos.y);
+			map->putItem(3, pos.x, pos.y);
 		}
 
-		string gui = "Robots: " + sizeof(robots);
+		// Render out the robots
+		for (int j = 0; j < amountOfRobots; j++) {
+			Position pos = robots[j].getPosition(); // Get position from robot
+			map->putItem(0, pos.x, pos.y); // Remove footprint
+			pos = robots[j].logic(*map); // Run logic, and save new position
+			map->putItem(3, pos.x, pos.y); // Re-apply footprint
+			cout << "Position to draw " << pos.x << ":" << pos.y << " Robot index: " << j << " Robots[] size: " << amountOfRobots << endl;
+			screen->draw(robots[j].getIcon(), pos.x, pos.y); // Render out robot
+		}
 
-		screen->render(gui); // Render screen
+		string gui = "Robot 0: " + to_string(robots[0].getPosition().x) + ":" + to_string(robots[0].getPosition().y) + " dir: " + to_string(robots[0].getDirection()); // Compile GUI Text
+
+		screen->render(gui); // Render screen with GUI
 		this_thread::sleep_for(std::chrono::milliseconds(100)); // Sleep for some millis
 	}
 }

@@ -5,12 +5,14 @@
 #include "Map.h"
 #include <vector>
 #include <string>
+#include <iostream>
 
 /*
 	Item ID's:
 	0 - Empty
 	1 - Fuel station
 	2 - Light source
+ 	3 - Robot footstep
 
 */
 
@@ -28,11 +30,14 @@ void bake() {
 }
 
 void Map::putItem(int id, int index) {
+	if(index > contents.size() || index < 0) return;
 	this->contents.at(index).setItem(id);
 }
 
 void Map::putItem(int id, int x, int y) {
-	this->contents.at(x + (y*this->width)).setItem(id);
+	int index = x + (y*this->width);
+	if(index > width || index < 0) return;
+	this->contents.at(index).setItem(id);
 }
 
 std::vector<Block> Map::getMap() {
@@ -44,7 +49,11 @@ Block Map::getItem(int index) {
 }
 
 Block Map::getItem(int x, int y) {
-	return this->contents.at(x + (y*this->width));
+	int index = x + (y*this->width);
+	if(index > contents.size() || index < 0){
+		std::cout << "getItem(x, y) failed x:" << x << " y:" << y << std::endl;
+	}
+	return this->getItem(index);
 }
 
 int Map::getWidth() {

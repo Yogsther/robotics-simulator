@@ -36,12 +36,14 @@ void Screen::clear() {
 }
 
 void Screen::draw(char character, int index) {
-	if (index >= data.size() || index < 0) return;
+	if (index >= data.size() || index < 0){
+		cout << "Out of range! index: " << index << endl;
+	}
 	data.at(index) = character;
 }
 
 void Screen::draw(char character, int x, int y) {
-	draw(character, x + (y*width));
+	this->draw(character, x + (y*width));
 }
 
 string printStr = "";
@@ -61,11 +63,11 @@ void displayPrint() {
 
 void Screen::render(string gui) {
 	// Reset view
-	//cout << frameSpace << endl;
 	print(frameSpace);
 
+	printStr = printStr + gui + "\n";
+
 	// Top frame border
-	//cout << borderString << endl;
 	print(borderString + "\n");
 
 	for (int i = 0; i < width*height; i++) {
@@ -85,4 +87,13 @@ void Screen::render(string gui) {
 	print('\n' + borderString + '\n');
 
 	displayPrint();
+}
+
+/**
+ * Cleans screen data from all robot footprints.
+ */
+void Screen::clean() {
+	for(int i = 0; i < data.size(); i++){
+		if(data.at(i) == 3) data.at(i) = 0;
+	}
 }
