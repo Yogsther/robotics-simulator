@@ -5,12 +5,12 @@
 #ifndef ROBOTS_POSITION_H
 #define ROBOTS_POSITION_H
 
-
 class Position {
 public:
-    int x;
-    int y;
-    Position(int x, int y);
+	int x;
+	int y;
+	Position(int x, int y);
+	Position();
 };
 
 #endif //ROBOTS_POSITION_H

@@ -9,6 +9,7 @@
 #include <vector>
 #include "Block.h"
 #include "Map.h"
+#include "Move.h"
 
 class Robot {
 public:
@@ -21,6 +22,7 @@ public:
 	char getIcon();
 	int getDirection();
 private:
+	Move evaluateMove(int x, int y, int direction, Map map); // Calculate how good a potential move is
 	int fuel = 25; // Starts with 25 fuel, max amount is 50.
 	bool lightLover;
 	char icon = 'L';

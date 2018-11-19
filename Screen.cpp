@@ -36,7 +36,7 @@ void Screen::clear() {
 }
 
 void Screen::draw(char character, int index) {
-	if (index >= data.size() || index < 0){
+	if (index >= data.size() || index < 0) {
 		cout << "Out of range! index: " << index << endl;
 	}
 	data.at(index) = character;
@@ -93,7 +93,7 @@ void Screen::render(string gui) {
  * Cleans screen data from all robot footprints.
  */
 void Screen::clean() {
-	for(int i = 0; i < data.size(); i++){
-		if(data.at(i) == 3) data.at(i) = 0;
+	for (int i = 0; i < data.size(); i++) {
+		if (data.at(i) == 3) data.at(i) = 0;
 	}
 }
