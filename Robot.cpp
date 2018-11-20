@@ -10,6 +10,8 @@
 #include <string>
 #include "Move.h"
 
+int const THRESHOLD_LEVEL = 10; // When they will become desperate for fuel and sometimes ignore lightlevels
+int const START_FUEL = 50;
 int const TRAIL_LENGTH = 100;
 int trailIndex = 0;
 Position trail[TRAIL_LENGTH]; // Trail of the robot, history of position
@@ -41,14 +43,25 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 
 	if (possible) {
 		// Check trial. If it has not been here before, go there.
-		if (indexOfTrail(Position::Position(x, y)) == -1) movePoints++;
+		if (indexOfTrail(Position(x, y)) == -1) movePoints++;
 
-		// Evaluate light conditions
-		if (this->lightLover) {
-			movePoints += map.getItem(final_x, final_y).getLight(); // The more light, the better
+		if(this->fuel > THRESHOLD_LEVEL){
+
+			// Evaluate light conditions
+			if (this->lightLover) {
+				movePoints += map.getItem(final_x, final_y).getLight(); // The more light, the better
+			}
+			else {
+				movePoints -= map.getItem(final_x, final_y).getLight(); // The less light, the better
+			}
+		} else {
+			// Get to a fuel station immediately!
+			movePoints += map.getWidth() - map.getItem(final_x, final_y).getDistanceToFuel();
 		}
-		else {
-			movePoints -= map.getItem(final_x, final_y).getLight(); // The less light, the better
+
+		if(map.getItem(final_x, final_y).getDistanceToFuel() == 1 && this->fuel < THRESHOLD_LEVEL){
+			movePoints += 10000;
+			this->refueling = true;
 		}
 	}
 
@@ -59,6 +72,7 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 
 Robot::Robot(int x, int y, bool lightLover) {
 	position = Position(x, y);
+	this->fuel = START_FUEL;
 	this->lightLover = lightLover;
 	if (!lightLover) icon = 'H';
 }
@@ -66,11 +80,12 @@ Robot::Robot(int x, int y, bool lightLover) {
 Robot::Robot() {
 }
 
-/* § the robot */
+
 void Robot::move(int x, int y) {
 	this->position.x += x;
 	this->position.y += y;
-	pushToTrail(Position::Position(x, y));
+	pushToTrail(Position(x, y));
+	this->fuel -= 1;
 }
 
 Position Robot::getPosition() {
@@ -82,6 +97,18 @@ char Robot::getIcon() {
 }
 
 Position Robot::logic(Map map) {
+
+	if(refueling){
+		fuel++;
+		if(this->fuel == START_FUEL) refueling = false;
+		return this->position;
+	}
+
+	if(this->fuel < 0){
+		this->alive = false;
+		return this->position;
+	}
+
 	const int amountOfMoves = 8; // 8 for diagonal, otherwise 4.
 	Move moves[amountOfMoves]; // 8 possible moves
 	moves[0] = evaluateMove(0, -1, 0, map); 	// Up
@@ -128,4 +155,16 @@ Position Robot::logic(Map map) {
 
 int Robot::getDirection() {
 	return this->direction;
+}
+
+int Robot::getFuelLevel(){
+    return this->fuel;
+}
+
+bool Robot::isRefueling(){
+	return this->refueling;
+}
+
+bool Robot::isAlive(){
+	return this->alive;
 }

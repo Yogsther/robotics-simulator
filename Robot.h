@@ -19,14 +19,19 @@ public:
 	void move(int x, int y);
 	Position getPosition();
 	void refuel();
+    int getFuelLevel();
 	char getIcon();
 	int getDirection();
+	bool isRefueling();
+	bool isAlive();
 private:
+	bool alive = true;
+	int refueling = false;
 	Move evaluateMove(int x, int y, int direction, Map map); // Calculate how good a potential move is
-	int fuel = 25; // Starts with 25 fuel, max amount is 50.
+	int fuel;
 	bool lightLover;
 	char icon = 'L';
-	int direction; // Facing direction, 0-3, up, right, down, left
+	int direction; // Facing direction, 0-7
 	Position position = Position(0, 0);
 };
 

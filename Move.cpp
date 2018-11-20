@@ -1,20 +1,24 @@
+//
+// Created by olle on 2018-11-20.
+//
+
 #include "Move.h"
 
 Move::Move(int x, int y, int value, int direction) {
-	this->x = x;
-	this->y = y;
-	this->value = value;
-	this->direction = direction;
+    this->x = x;
+    this->y = y;
+    this->value = value;
+    this->direction = direction;
 }
 int Move::getX() {
-	return this->x;
+    return this->x;
 }
 int Move::getY() {
-	return this->y;
+    return this->y;
 }
 int Move::getValue() {
-	return this->value;
+    return this->value;
 }
 int Move::getDirection() {
-	return this->direction;
+    return this->direction;
 }

@@ -5,6 +5,7 @@
 #include "Map.h"
 #include <vector>
 #include <string>
+#include <cmath>
 #include <iostream>
 
 /*
@@ -39,13 +40,31 @@ void Map::bake() {
 				int y = (j - x) / this->width;
 				// Calculate distance
 				int d = 10 - sqrt(pow(org_x - x, 2) + pow(org_y - y, 2));
-				// Save original light initensity so they can be added if that is the case.
+				// Save original light intensity so they can be added if that is the case.
 				int org_d = this->contents.at(j).getLight();
 				// Apply light value
 				if (d > 0) this->contents.at(j).setLight(d + org_d);
 			}
 		}
 	}
+
+    // Go through all items and calculate on each station.
+    for (int i = 0; i < this->width * this->height; i++) {
+        if (this->contents.at(i).getItem() == 1 /* Fuel tank */) {
+            // Get original x and y
+            int org_x = i % this->width;
+            int org_y = (i - org_x) / this->width;
+            for (int j = 0; j < this->contents.size(); j++) {
+                // Find the distance of all other blocks
+                int x = j % this->width;
+                int y = (j - x) / this->width;
+                // Calculate distance
+                int d = sqrt(pow(org_x - x, 2) + pow(org_y - y, 2));
+                // Apply light value
+                if (this->contents.at(j).getDistanceToFuel() > d || this->contents.at(j).getDistanceToFuel() == -1) this->contents.at(j).setDistanceToFuel(d);
+            }
+        }
+    }
 }
 
 // Place an item in the map
