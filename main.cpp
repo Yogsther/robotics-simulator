@@ -20,7 +20,7 @@ int const DELAY = 40; // ms
 int const WIDTH = 50;
 int const HEIGHT = 20;
 const bool seeded = true;
-const bool renderLightData = false;
+const bool renderLightData = true;
 
 int lightlovers, lighthaters;
 
