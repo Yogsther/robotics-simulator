@@ -12,13 +12,13 @@
 #include "main.h"
 
 using namespace std;
+int const amountOfStations = 5;
 
-int const amountOfRobots = 5;
-int const amountOfStations = 0;
-int const amountOfLights = 3;
-int const DELAY = 40; // ms
-int const WIDTH = 50;
-int const HEIGHT = 20;
+int const amountOfRobots = 50;
+int const amountOfLights = 5;
+int const DELAY = 50; // ms
+int const WIDTH = 80;
+int const HEIGHT = 30;
 const bool seeded = true;
 const bool renderLightData = true;
 
@@ -31,7 +31,7 @@ string generateGUI() {
 
 	for (int i = 0; i < amountOfRobots; i++) {
 		Robot robot = robots[i];
-		gui = gui + "\n robot " + to_string(i) + ", dir: " + to_string(robot.getDirection()) + " x: " + to_string(robot.getPosition().x) + " y:" + to_string(robot.getPosition().y);
+		gui = gui + "\n robot " + to_string(i) + ", dir: " + to_string(robot.getDirection()) + " fuel: " + to_string(robot.getFuelLevel()) + " refueling: " + to_string(robot.isRefueling()) + " alive: " + to_string(robot.isAlive());
 	}
 
 	return gui;
@@ -95,12 +95,14 @@ int main() {
 
 		// Render out the robots
 		for (int j = 0; j < amountOfRobots; j++) {
-			Position pos = robots[j].getPosition(); // Get position from robot
-			map->putItem(0, pos.x, pos.y); // Remove footprint
-			pos = robots[j].logic(*map); // Run logic, and save new position
-			map->putItem(3, pos.x, pos.y); // Re-apply footprint
-			//cout << "Position to draw " << pos.x << ":" << pos.y << " Robot index: " << j << " Robots[] size: " << amountOfRobots << endl;
-			if (!renderLightData) screen->draw(robots[j].getIcon(), pos.x, pos.y); // Render out robot
+			if(robots[j].isAlive()){
+				Position pos = robots[j].getPosition(); // Get position from robot
+				map->putItem(0, pos.x, pos.y); // Remove footprint
+				pos = robots[j].logic(*map); // Run logic, and save new position
+				map->putItem(3, pos.x, pos.y); // Re-apply footprint
+				//cout << "Position to draw " << pos.x << ":" << pos.y << " Robot index: " << j << " Robots[] size: " << amountOfRobots << endl;
+				if (!renderLightData) screen->draw(robots[j].getIcon(), pos.x, pos.y); // Render out robot
+			}
 		}
 
 		string gui = "Robotics Simulator 2019\n";// Compile GUI Text

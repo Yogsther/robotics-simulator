@@ -14,10 +14,18 @@ void Block::setItem(int item) {
 	this->item = item;
 }
 
+void Block::setDistanceToFuel(int distance) {
+	this->distanceToFuel = distance;
+}
+
 int Block::getLight() {
 	return light;
 }
 
 int Block::getItem() {
 	return item;
+}
+
+int Block::getDistanceToFuel() {
+	return this->distanceToFuel;
 }
