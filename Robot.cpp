@@ -10,7 +10,7 @@
 #include <string>
 #include "Move.h"
 
-int const THRESHOLD_LEVEL = 10; // When they will become desperate for fuel and sometimes ignore lightlevels
+int const THRESHOLD_LEVEL = 25; // When they will become desperate for fuel and sometimes ignore lightlevels
 int const START_FUEL = 50;
 int const TRAIL_LENGTH = 100;
 int trailIndex = 0;
@@ -45,8 +45,7 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 		// Check trial. If it has not been here before, go there.
 		if (indexOfTrail(Position(x, y)) == -1) movePoints++;
 
-		if(this->fuel > THRESHOLD_LEVEL){
-
+		if (this->fuel > THRESHOLD_LEVEL) {
 			// Evaluate light conditions
 			if (this->lightLover) {
 				movePoints += map.getItem(final_x, final_y).getLight(); // The more light, the better
@@ -54,12 +53,13 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 			else {
 				movePoints -= map.getItem(final_x, final_y).getLight(); // The less light, the better
 			}
-		} else {
+		}
+		else {
 			// Get to a fuel station immediately!
 			movePoints += map.getWidth() - map.getItem(final_x, final_y).getDistanceToFuel();
 		}
 
-		if(map.getItem(final_x, final_y).getDistanceToFuel() == 1 && this->fuel < THRESHOLD_LEVEL){
+		if (map.getItem(final_x, final_y).getDistanceToFuel() == 1 && this->fuel < THRESHOLD_LEVEL) {
 			movePoints += 10000;
 			this->refueling = true;
 		}
@@ -80,7 +80,6 @@ Robot::Robot(int x, int y, bool lightLover) {
 Robot::Robot() {
 }
 
-
 void Robot::move(int x, int y) {
 	this->position.x += x;
 	this->position.y += y;
@@ -97,14 +96,13 @@ char Robot::getIcon() {
 }
 
 Position Robot::logic(Map map) {
-
-	if(refueling){
+	if (refueling) {
 		fuel++;
-		if(this->fuel == START_FUEL) refueling = false;
+		if (this->fuel == START_FUEL) refueling = false;
 		return this->position;
 	}
 
-	if(this->fuel < 0){
+	if (this->fuel < 0) {
 		this->alive = false;
 		return this->position;
 	}
@@ -157,14 +155,14 @@ int Robot::getDirection() {
 	return this->direction;
 }
 
-int Robot::getFuelLevel(){
-    return this->fuel;
+int Robot::getFuelLevel() {
+	return this->fuel;
 }
 
-bool Robot::isRefueling(){
+bool Robot::isRefueling() {
 	return this->refueling;
 }
 
-bool Robot::isAlive(){
+bool Robot::isAlive() {
 	return this->alive;
 }

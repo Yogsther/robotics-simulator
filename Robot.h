@@ -19,7 +19,7 @@ public:
 	void move(int x, int y);
 	Position getPosition();
 	void refuel();
-    int getFuelLevel();
+	int getFuelLevel();
 	char getIcon();
 	int getDirection();
 	bool isRefueling();
@@ -30,7 +30,7 @@ private:
 	Move evaluateMove(int x, int y, int direction, Map map); // Calculate how good a potential move is
 	int fuel;
 	bool lightLover;
-	char icon = 'L';
+	char icon = 'R';
 	int direction; // Facing direction, 0-7
 	Position position = Position(0, 0);
 };

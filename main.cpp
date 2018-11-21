@@ -14,25 +14,28 @@
 using namespace std;
 int const amountOfStations = 5;
 
-int const amountOfRobots = 50;
+int const amountOfRobots = 5;
 int const amountOfLights = 5;
-int const DELAY = 50; // ms
-int const WIDTH = 80;
-int const HEIGHT = 30;
+int const DELAY = 150; // ms
+int const WIDTH = 60;
+int const HEIGHT = 20;
 const bool seeded = true;
-const bool renderLightData = true;
+const bool renderLightData = false;
 
 int lightlovers, lighthaters;
 
 Robot robots[amountOfRobots];
 
 string generateGUI() {
-	string gui = "amount: " + to_string(amountOfRobots) + " seeded: " + to_string(seeded);
-
+	string gui = "amount:" + to_string(amountOfRobots) + " seeded:" + to_string(seeded);
+	int aliveRobots = 0;
 	for (int i = 0; i < amountOfRobots; i++) {
 		Robot robot = robots[i];
-		gui = gui + "\n robot " + to_string(i) + ", dir: " + to_string(robot.getDirection()) + " fuel: " + to_string(robot.getFuelLevel()) + " refueling: " + to_string(robot.isRefueling()) + " alive: " + to_string(robot.isAlive());
+		if (robot.isAlive()) aliveRobots++;
+		//gui = gui + "\n robot " + to_string(i) + ", dir: " + to_string(robot.getDirection()) + " fuel: " + to_string(robot.getFuelLevel()) + " refueling: " + to_string(robot.isRefueling()) + " alive: " + to_string(robot.isAlive());
 	}
+
+	gui = gui + " alive:" + to_string(aliveRobots) + " dead:" + to_string(amountOfRobots - aliveRobots);
 
 	return gui;
 }
@@ -79,8 +82,8 @@ int main() {
 
 		// Render out the map
 		for (int i = 0; i < (WIDTH * HEIGHT); i++) {
-			if (map->getItem(i).getItem() == 1) screen->draw('F', i);
-			if (map->getItem(i).getItem() == 2) screen->draw('X', i);
+			if (map->getItem(i).getItem() == 1) screen->draw('B', i);
+			if (map->getItem(i).getItem() == 2) screen->draw('L', i);
 
 			if (map->getItem(i).getLight() < 10 && renderLightData) {
 				screen->draw(to_string(map->getItem(i).getLight()).c_str()[0], i);
@@ -95,7 +98,7 @@ int main() {
 
 		// Render out the robots
 		for (int j = 0; j < amountOfRobots; j++) {
-			if(robots[j].isAlive()){
+			if (robots[j].isAlive()) {
 				Position pos = robots[j].getPosition(); // Get position from robot
 				map->putItem(0, pos.x, pos.y); // Remove footprint
 				pos = robots[j].logic(*map); // Run logic, and save new position
