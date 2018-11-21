@@ -76,7 +76,7 @@ void Map::putItem(int id, int index) {
 // Place an item in the map with x,y
 void Map::putItem(int id, int x, int y) {
 	int index = x + (y*this->width);
-	if (index > width || index < 0) return;
+	if (index > width*height|| index < 0) return;
 	this->contents.at(index).setItem(id);
 }
 

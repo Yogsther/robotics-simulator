@@ -72,7 +72,7 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 
 Robot::Robot(int x, int y, bool lightLover) {
 	position = Position(x, y);
-	this->fuel = START_FUEL;
+	this->fuel = START_FUEL + (rand() % 25) /* Give the all a random boost with fuel */;
 	this->lightLover = lightLover;
 	if (!lightLover) icon = 'H';
 }
