@@ -10,24 +10,29 @@
 #include "Block.h"
 #include "Map.h"
 #include "Move.h"
+#include "Options.h"
 
 class Robot {
 public:
 	Robot();
-	Robot(int x, int y, bool lightLover);
+	Robot(int x, int y, bool lightLover, Options options);
 	Position logic(Map map); // Run the bot (one frame)
 	void move(int x, int y);
 	Position getPosition();
-	void refuel();
 	int getFuelLevel();
 	char getIcon();
 	int getDirection();
 	bool isRefueling();
 	bool isAlive();
+	void confirmDeath();
+	bool isConfirmedDead();
+	std::vector<Position> getTrail();
 private:
+	bool confirmedDead = false;
 	bool alive = true;
 	int refueling = false;
 	Move evaluateMove(int x, int y, int direction, Map map); // Calculate how good a potential move is
+	Options options;
 	int fuel;
 	bool lightLover;
 	char icon = 'R';

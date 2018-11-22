@@ -37,7 +37,8 @@ void Screen::clear() {
 
 void Screen::draw(char character, int index) {
 	if (index >= data.size() || index < 0) {
-		cout << "Out of range! index: " << index << endl;
+		//cout << "Out of range! index: " << index << endl;
+		return;
 	}
 	data.at(index) = character;
 }

@@ -7,6 +7,7 @@
 
 #include "Block.h"
 #include <vector>
+#include "Position.h"
 
 class Map {
 private:
@@ -16,6 +17,7 @@ private:
 public:
 	Map(int width, int height); // Constructor, create the map
 	void bake(); // Bake map, calculate all light intensities for all parts of the map.
+	Position summon(int item);
 	void putItem(int id, int x, int y); // Place an item in the map
 	void putItem(int id, int index); // Place an item in the map
 	std::vector<Block> getMap(); // Returns map

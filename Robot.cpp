@@ -9,24 +9,32 @@
 #include <iostream>
 #include <string>
 #include "Move.h"
+#include "Options.h"
 
-int const THRESHOLD_LEVEL = 25; // When they will become desperate for fuel and sometimes ignore lightlevels
-int const START_FUEL = 50;
-int const TRAIL_LENGTH = 100;
+int THRESHOLD_LEVEL; // When they will become desperate for fuel and sometimes ignore lightlevels
+int START_FUEL;
+int TRAIL_LENGTH;
+int ONLY_FUEL_DIRECT;
 int trailIndex = 0;
-Position trail[TRAIL_LENGTH]; // Trail of the robot, history of position
+
+std::vector <Position> trail; // Trail of the robot, history of position
 
 /* Creates a circular array */
 void pushToTrail(Position pos) {
-	trail[trailIndex % TRAIL_LENGTH] = pos;
+	if (trail.size() <= trailIndex % TRAIL_LENGTH) trail.push_back(pos);
+	else trail.at(trailIndex % TRAIL_LENGTH) = pos;
 	trailIndex++;
 }
 
 int indexOfTrail(Position pos) {
-	for (int i = 0; i < TRAIL_LENGTH; i++) {
-		if (trail[i].x == pos.x && trail[i].y == pos.y) return i;
+	for (int i = 0; i < trail.size(); i++) {
+		if (trail.at(i).x == pos.x && trail.at(i).y == pos.y) return i;
 	}
 	return -1;
+}
+
+std::vector<Position> Robot::getTrail() {
+	return trail;
 }
 
 Move Robot::evaluateMove(int x, int y, int direction, Map map) {
@@ -39,11 +47,21 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 	int height = map.getHeight();
 
 	if (final_x >= width || final_x < 0 || final_y >= height || final_y < 0) possible = false;
+	else if (map.getItem(final_x, final_y).getDistanceToFuel() == 0 && this->fuel < THRESHOLD_LEVEL) {
+		/* Step onto a fuelstation */
+		if (ONLY_FUEL_DIRECT == 1) {
+			if (direction < 4 /* Direction is not diagonal*/) this->refueling = true;
+		}
+		else {
+			this->refueling = true;
+		}
+		possible = false;
+	}
 	else if (map.getItem(final_x, final_y).getItem() != 0) possible = false;
 
 	if (possible) {
 		// Check trial. If it has not been here before, go there.
-		if (indexOfTrail(Position(x, y)) == -1) movePoints++;
+		if (indexOfTrail(Position(final_x, final_y)) == -1) movePoints++;
 
 		if (this->fuel > THRESHOLD_LEVEL) {
 			// Evaluate light conditions
@@ -58,11 +76,6 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 			// Get to a fuel station immediately!
 			movePoints += map.getWidth() - map.getItem(final_x, final_y).getDistanceToFuel();
 		}
-
-		if (map.getItem(final_x, final_y).getDistanceToFuel() == 1 && this->fuel < THRESHOLD_LEVEL) {
-			movePoints += 10000;
-			this->refueling = true;
-		}
 	}
 
 	if (!possible) movePoints = 0;
@@ -70,11 +83,18 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 	return Move(x, y, movePoints, direction);
 }
 
-Robot::Robot(int x, int y, bool lightLover) {
+Robot::Robot(int x, int y, bool lightLover, Options options) {
 	position = Position(x, y);
 	this->fuel = START_FUEL + (rand() % 25) /* Give the all a random boost with fuel */;
 	this->lightLover = lightLover;
 	if (!lightLover) icon = 'H';
+
+	this->options = options;
+
+	THRESHOLD_LEVEL = options.get("THRESHOLD_LEVEL"); // When they will become desperate for fuel and sometimes ignore lightlevels
+	START_FUEL = options.get("START_FUEL");;
+	TRAIL_LENGTH = options.get("TRAIL_LENGTH");
+	ONLY_FUEL_DIRECT = options.get("ONLY_FUEL_DIRECT");
 }
 
 Robot::Robot() {
@@ -83,7 +103,7 @@ Robot::Robot() {
 void Robot::move(int x, int y) {
 	this->position.x += x;
 	this->position.y += y;
-	pushToTrail(Position(x, y));
+	pushToTrail(this->position);
 	this->fuel -= 1;
 }
 
@@ -102,15 +122,15 @@ Position Robot::logic(Map map) {
 		return this->position;
 	}
 
-	if (this->fuel < 0) {
+	if (this->fuel < 0 && !options.get("UNDEAD")) {
 		this->alive = false;
 		return this->position;
 	}
 
 	const int amountOfMoves = 8; // 8 for diagonal, otherwise 4.
 	Move moves[amountOfMoves]; // 8 possible moves
-	moves[0] = evaluateMove(0, -1, 0, map); 	// Up
-	moves[1] = evaluateMove(1, 0, 1, map);	 	// Left
+	moves[0] = evaluateMove(0, -1, 0, map); // Up
+	moves[1] = evaluateMove(1, 0, 1, map);	// Left
 	moves[2] = evaluateMove(0, 1, 2, map); 	// Down
 	moves[3] = evaluateMove(-1, 0, 3, map);	// Right
 
@@ -120,7 +140,6 @@ Position Robot::logic(Map map) {
 	moves[6] = evaluateMove(-1, 1, 6, map); 	// Down, Left
 	moves[7] = evaluateMove(-1, -1, 7, map);	// Up, Left
 
-	int bestMoveIndex; // Important for saving the direction (index = direction)
 	Move bestMove = Move(0, 0, 0, 0);
 	Move worstMove = Move(-1, 0, 0, 0);
 
@@ -129,12 +148,11 @@ Position Robot::logic(Map map) {
 	for (int i = 0; i < amountOfMoves; i++) {
 		if ((moves[i].getValue() == bestMove.getValue() && i == this->direction) || moves[i].getValue() > bestMove.getValue()) {
 			bestMove = moves[i];
-			bestMoveIndex = i;
 		}
 		if (moves[i].getValue() < worstMove.getValue() || worstMove.getValue() == -1) worstMove = moves[i];
 	}
 	if (bestMove.getValue() != 0) {
-		if (bestMoveIndex == this->direction) {
+		if (bestMove.getDirection() == this->direction) {
 			this->move(bestMove.getX(), bestMove.getY()); // Continue in direction, all moves are equally good.
 		}
 		else {
@@ -165,4 +183,12 @@ bool Robot::isRefueling() {
 
 bool Robot::isAlive() {
 	return this->alive;
+}
+
+void Robot::confirmDeath() {
+	this->confirmedDead = true;
+}
+
+bool Robot::isConfirmedDead() {
+	return this->confirmedDead;
 }

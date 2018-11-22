@@ -7,6 +7,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include "Position.h"
 
 /*
 	Item ID's:
@@ -48,23 +49,38 @@ void Map::bake() {
 		}
 	}
 
-    // Go through all items and calculate on each station.
-    for (int i = 0; i < this->width * this->height; i++) {
-        if (this->contents.at(i).getItem() == 1 /* Fuel tank */) {
-            // Get original x and y
-            int org_x = i % this->width;
-            int org_y = (i - org_x) / this->width;
-            for (int j = 0; j < this->contents.size(); j++) {
-                // Find the distance of all other blocks
-                int x = j % this->width;
-                int y = (j - x) / this->width;
-                // Calculate distance
-                int d = sqrt(pow(org_x - x, 2) + pow(org_y - y, 2));
-                // Apply light value
-                if (this->contents.at(j).getDistanceToFuel() > d || this->contents.at(j).getDistanceToFuel() == -1) this->contents.at(j).setDistanceToFuel(d);
-            }
-        }
-    }
+	// Go through all items and calculate on each station.
+	for (int i = 0; i < this->width * this->height; i++) {
+		if (this->contents.at(i).getItem() == 1 /* Fuel tank */) {
+			// Get original x and y
+			int org_x = i % this->width;
+			int org_y = (i - org_x) / this->width;
+			for (int j = 0; j < this->contents.size(); j++) {
+				// Find the distance of all other blocks
+				int x = j % this->width;
+				int y = (j - x) / this->width;
+				// Calculate distance
+				int d = sqrt(pow(org_x - x, 2) + pow(org_y - y, 2));
+				// Apply light value
+				if (this->contents.at(j).getDistanceToFuel() > d || this->contents.at(j).getDistanceToFuel() == -1) this->contents.at(j).setDistanceToFuel(d);
+			}
+		}
+	}
+}
+
+Position Map::summon(int item) {
+	// Find a random, empty spot to spawn in
+	int index = rand() % (this->width*this->height);
+	while (this->contents.at(index).getItem() != 0) {
+		index = rand() % (this->width*this->height);
+	}
+	// Find the X and Y from index
+	int x = index % this->width;
+	int y = (index - x) / width;
+	// Place item in the map
+	this->contents.at(index).setItem(item);
+	// Return the chosen position
+	return Position(x, y);
 }
 
 // Place an item in the map
@@ -76,7 +92,7 @@ void Map::putItem(int id, int index) {
 // Place an item in the map with x,y
 void Map::putItem(int id, int x, int y) {
 	int index = x + (y*this->width);
-	if (index > width*height|| index < 0) return;
+	if (index > width*height || index < 0) return;
 	this->contents.at(index).setItem(id);
 }
 
