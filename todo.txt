@@ -1,7 +1,0 @@
-TODO:
-
-Limit fueling diagonally
-
-Bugs to fix:
-
-Sometimes robots will fuel one step too far from the station

@@ -37,7 +37,7 @@ vector<Robot> robots; // Vector to house all robots
 
 /* Generate an information GUI at the top of the screen */
 string generateGUI() {
-	string gui = "amount:" + to_string(AMOUNT_OF_ROBOTS) + " seed:" + to_string(SEED) + " seeded:" + to_string(SEEDED);
+	string gui = "amount:" + to_string(AMOUNT_OF_ROBOTS);
 	int aliveRobots = 0;
 	for (int i = 0; i < AMOUNT_OF_ROBOTS; i++) {
 		Robot robot = robots.at(i);
@@ -45,14 +45,16 @@ string generateGUI() {
 		//gui = gui + "\n robot " + to_string(i) + ", dir: " + to_string(robot.getDirection()) + " fuel: " + to_string(robot.getFuelLevel()) + " refueling: " + to_string(robot.isRefueling()) + " alive: " + to_string(robot.isAlive());
 	}
 
-	gui = gui + " alive:" + to_string(aliveRobots) + " dead:" + to_string(AMOUNT_OF_ROBOTS - aliveRobots) + " frames:" + to_string(frames) + "\nfuel_slots:" + to_string(fuelSlots) + " empty_fuel_slots : " + to_string(emptyFuelSlots);
+	gui = gui + " alive:" + to_string(aliveRobots) + " dead:" + to_string(AMOUNT_OF_ROBOTS - aliveRobots) + " seeded:" + to_string(SEEDED) + " seed:" + to_string(SEED) + "\nempty_fuel_slots:" + to_string(emptyFuelSlots) + "/" + to_string(fuelSlots) + " frames:" + to_string(frames);
 
 	return gui;
 }
 
 int main() {
-	if (SEEDED == 1) srand(time(NULL)); // Seed rand()
-	if (SEEDED == 2) srand(SEED); // Seed rand()
+	if (SEEDED == 1) {
+		SEED = time(NULL);
+	}
+	srand(SEED); // Seed rand()
 
 	lightlovers = 0;
 	lighthaters = 0;
@@ -137,8 +139,8 @@ int main() {
 			}
 		}
 
-		string gui = "Robotics Simulator 2019\n(R:Robot, H:Light_Hate_Robot, L: Light, B: Station)\n-----------------\n";// Compile GUI Text
-		gui = gui + generateGUI();
+		string gui = "Robotics Simulator 2019\n(R:Robot, H:Light_Hate_Robot, L: Light, B: Station)\n---------------------------------------------------\n";// Compile GUI Text
+		gui = gui + generateGUI() + "\n---------------------------------------------------";
 
 		screen->render(gui); // Render screen with GUI
 		frames++;

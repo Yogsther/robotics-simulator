@@ -12,7 +12,7 @@
 #include "Options.h"
 
 int THRESHOLD_LEVEL; // When they will become desperate for fuel and sometimes ignore lightlevels
-int START_FUEL;
+int FUEL_CAPACITY;
 int TRAIL_LENGTH;
 int ONLY_FUEL_DIRECT;
 int trailIndex = 0;
@@ -47,9 +47,9 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 	int height = map.getHeight();
 
 	if (final_x >= width || final_x < 0 || final_y >= height || final_y < 0) possible = false;
-	else if (map.getItem(final_x, final_y).getDistanceToFuel() == 0 && this->fuel < THRESHOLD_LEVEL) {
+	else if (map.getItem(final_x, final_y).getItem() == 1 && this->fuel < THRESHOLD_LEVEL) {
 		/* Step onto a fuelstation */
-		if (ONLY_FUEL_DIRECT == 1) {
+		if (ONLY_FUEL_DIRECT > 0) {
 			if (direction < 4 /* Direction is not diagonal*/) this->refueling = true;
 		}
 		else {
@@ -85,14 +85,14 @@ Move Robot::evaluateMove(int x, int y, int direction, Map map) {
 
 Robot::Robot(int x, int y, bool lightLover, Options options) {
 	position = Position(x, y);
-	this->fuel = START_FUEL + (rand() % 25) /* Give the all a random boost with fuel */;
+	this->fuel = FUEL_CAPACITY + (rand() % 25) /* Give the all a random boost with fuel */;
 	this->lightLover = lightLover;
 	if (!lightLover) icon = 'H';
 
 	this->options = options;
 
 	THRESHOLD_LEVEL = options.get("THRESHOLD_LEVEL"); // When they will become desperate for fuel and sometimes ignore lightlevels
-	START_FUEL = options.get("START_FUEL");;
+	FUEL_CAPACITY = options.get("FUEL_CAPACITY");;
 	TRAIL_LENGTH = options.get("TRAIL_LENGTH");
 	ONLY_FUEL_DIRECT = options.get("ONLY_FUEL_DIRECT");
 }
@@ -101,6 +101,7 @@ Robot::Robot() {
 }
 
 void Robot::move(int x, int y) {
+	if (refueling) return;
 	this->position.x += x;
 	this->position.y += y;
 	pushToTrail(this->position);
@@ -118,7 +119,7 @@ char Robot::getIcon() {
 Position Robot::logic(Map map) {
 	if (refueling) {
 		fuel++;
-		if (this->fuel == START_FUEL) refueling = false;
+		if (this->fuel == FUEL_CAPACITY) refueling = false;
 		return this->position;
 	}
 

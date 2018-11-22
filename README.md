@@ -1,3 +1,15 @@
+﻿## Robotics Simulator 2019
+
+![Screenshot showcase](sh.png)
+
+#### Try it out
+
+You can find the latest linux and win32 build in /build or at the [releases](https://github.com/Yogsther/robotics-simulator/releases). 
+Make sure you have an up-to-date options.cfg file with the executable. 
+
+Feel free to edit the options.cfg and experiment.
+
+
 ## Robotar - Systembeskrivning
 
 
