@@ -2,15 +2,19 @@
 
 ![Screenshot showcase](sh.png)
 
-#### Try it out
+### Try it out
 
 You can find the latest linux and win32 build in /build or at the [releases](https://github.com/Yogsther/robotics-simulator/releases). 
 Make sure you have an up-to-date options.cfg file with the executable. 
 
 Feel free to edit the options.cfg and experiment.
 
+### About
 
-## Robotar - Systembeskrivning
+There are two types of robots, normal - light loving robots (R) and light hating robots (H). There are light sources (L) and fuel stations (B).
+Check out options.cfg for more information on behavior.
+
+## Robotar - Systembeskrivning (not up to date)
 
 
 #### Position
