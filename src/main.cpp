@@ -15,7 +15,7 @@
 
 using namespace std;
 
-Options options = Options::Options();
+Options options = Options();
 
 // Set all settings
 int const AMOUNT_OF_ROBOTS = options.get("AMOUNT_OF_ROBOTS");

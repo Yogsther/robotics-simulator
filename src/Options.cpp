@@ -10,7 +10,7 @@ class Option {
 public:
 	std::string name;
 	int value;
-	Option::Option(std::string name, int value) {
+	Option(std::string name, int value) {
 		this->name = name;
 		this->value = value;
 	}
@@ -55,7 +55,7 @@ Options::Options() {
 		if (character == '?' /* Break line */) {
 			status = 0; // End of value
 			// Create and add the option - process is done
-			if (tempName != "") optionsList.push_back(Option::Option(tempName, std::stoi(tempValue)));
+			if (tempName != "") optionsList.push_back(Option(tempName, std::stoi(tempValue)));
 			tempName = "";
 			tempValue = "";
 			continue;
