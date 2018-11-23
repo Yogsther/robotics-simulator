@@ -1,6 +1,6 @@
 ﻿## Robotics Simulator 2019
 
-![Screenshot showcase](sh.png)
+![Example GIF](example.png)
 
 ### Try it out
 
