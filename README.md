@@ -1,6 +1,6 @@
-## Robotics Simulator 2019
+﻿## Robotics Simulator 2019
 
-![Example GIF](example.png)
+![Example GIF](example.gif)
 
 ### Try it out
 
