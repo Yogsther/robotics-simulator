@@ -1,4 +1,4 @@
-﻿## Robotics Simulator 2019
+## Robotics Simulator 2019
 
 ![Screenshot showcase](sh.png)
 
@@ -9,9 +9,9 @@ Make sure you have an up-to-date options.cfg file with the executable.
 
 *Feel free to edit the options.cfg and experiment.*
 
-#### Built it on linux
+#### Build it on linux
 
-Simply run ```g++ *.cpp``` in /src 
+Simply run ```g++ *.cpp``` in /src, then run the program **and** make sure options.cfg is in the same folder.
 
 ### About
 
@@ -31,8 +31,8 @@ Check out options.cfg for more information on behavior.
 Options will read the options.cfg file. It's a custom written reader that supports comments with '#', spaces
 and extra line breaks.
 
-A new option can be added with a (string)OPTION_NAME: (int)VALUE (linebreak)
-Then to read it in the code, create and Options object, and use options.get("OPTION_NAME");
+A new option can be added with a ```(string)OPTION_NAME: (int)VALUE (linebreak)```
+Then to read it in the code, create and Options object, and use ```options.get("OPTION_NAME");```
 
 #### Block.cpp
 
@@ -56,7 +56,6 @@ The evaluation method takes into account: light values, if the robot has been th
 
 Since the robots are not stored inside the map (only stations and light sources are) is a footprint system used. After every move, the robots footprint will
 be removed and reapplied in the new position. This allows the robots to see other robots since they only have access to the map.
- 
 
 
 ## Robotar - Systembeskrivning (not up to date)
