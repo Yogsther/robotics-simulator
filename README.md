@@ -16,7 +16,48 @@ Simply run ```g++ *.cpp``` in /src
 ### About
 
 There are two types of robots, normal - light loving robots (R) and light hating robots (H). There are light sources (L) and fuel stations (B).
+Once a robot goes below the fuel threshold it will seek a fuel station and ignore light conditions.
+When they need to fuel, the robot will stick itself to a fuel station and stay there while refueling to max capacity.
+
+Robots can walk diagonally but they wont walk through eachother or other items.
+
 Check out options.cfg for more information on behavior.
+
+
+### About the code
+
+#### Options.cpp
+
+Options will read the options.cfg file. It's a custom written reader that supports comments with '#', spaces
+and extra line breaks.
+
+A new option can be added with a (string)OPTION_NAME: (int)VALUE (linebreak)
+Then to read it in the code, create and Options object, and use options.get("OPTION_NAME");
+
+#### Block.cpp
+
+The map is built out of blocks, each block contains an item value, the distance to nearest fuel station and the light value
+
+#### Map.cpp
+
+The map class contains a matrix of blocks. One of the most important parts of Map is the bake method. 
+It will calculate all distances and light values and save them, since all of those values are static.
+
+It also has a summon feature for spawning items at random positions that prevents overlapping. 
+
+#### Robot.cpp
+
+The robots decide where to go next by using the evaluateMove system. All possible 8 moves (up, down, left, right and diagonal)
+are evaluated and given a score. Then one with highest score is chosen. If it's tie between moves, the direction of the robot
+will be prioritize. If multiple options are equally good, but the direction move is not as good, a random move from the best ones
+will be chosen. 
+
+The evaluation method takes into account: light values, if the robot has been there before (trail) and distance to fuel station (if below threshold).
+
+Since the robots are not stored inside the map (only stations and light sources are) is a footprint system used. After every move, the robots footprint will
+be removed and reapplied in the new position. This allows the robots to see other robots since they only have access to the map.
+ 
+
 
 ## Robotar - Systembeskrivning (not up to date)
 

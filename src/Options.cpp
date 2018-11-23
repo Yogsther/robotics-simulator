@@ -32,7 +32,7 @@ Options::Options() {
 	if (cfgFile.is_open()) {
 		while (std::getline(cfgFile, line))
 		{
-			text = text + line + '?'; // ? are break lines
+			text = text + line + '\n'; // ? are break lines
 		}
 		cfgFile.close();
 	}
@@ -52,7 +52,7 @@ Options::Options() {
 			continue;
 		}
 		if (character == ' ') continue;
-		if (character == '?' /* Break line */) {
+		if (character == '\n' /* Break line */) {
 			status = 0; // End of value
 			// Create and add the option - process is done
 			if (tempName != "") optionsList.push_back(Option(tempName, std::stoi(tempValue)));
